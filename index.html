@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>真白よぞら | Portfolio</title>
+  <style>
+    :root {
+      /* ギャルゲー・美少女ノベル風カラーパレット */
+      --bg-base: #fcf8fa;
+      --card-bg: rgba(255, 255, 255, 0.78);
+      --card-border: rgba(240, 190, 215, 0.6);
+      --accent: #ff659c;
+      --accent-sub: #8470ff;
+      --accent-gradient: linear-gradient(135deg, #ff7ba8 0%, #a48eff 100%);
+      --text: #2f2734;
+      --text-sub: #78697f;
+      --border-color: rgba(230, 200, 220, 0.6);
+      --window-shadow: 0 10px 30px rgba(180, 140, 170, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      line-height: 1.75;
+      min-height: 100vh;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(255, 215, 230, 0.6) 0%, transparent 40%),
+        radial-gradient(circle at 90% 15%, rgba(220, 215, 255, 0.55) 0%, transparent 45%),
+        radial-gradient(circle at 50% 60%, rgba(255, 235, 245, 0.5) 0%, transparent 60%),
+        linear-gradient(180deg, #fff7fa 0%, #f7f1f9 50%, #f4effa 100%);
+      background-attachment: fixed;
+    }
+
+    /* 18禁年齢確認モーダル */
+    .age-gate-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(45, 30, 48, 0.7);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .age-gate-overlay.is-passed {
+      display: none;
+    }
+    .age-gate-box {
+      background: rgba(255, 255, 255, 0.94);
+      border: 2px solid var(--accent);
+      border-radius: 18px;
+      padding: 40px 32px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(70, 30, 60, 0.25);
+    }
+    .age-gate-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      padding: 4px 16px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+    }
+    .age-gate-title {
+      font-size: 1.45rem;
+      margin-bottom: 14px;
+      color: #4a2d4b;
+      font-weight: 700;
+    }
+    .age-gate-text {
+      font-size: 0.92rem;
+      color: #6a576f;
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .age-gate-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-age-yes {
+      background: var(--accent-gradient);
+      color: #fff;
+      padding: 12px 34px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 101, 156, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-age-yes:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 101, 156, 0.55);
+    }
+    .btn-age-no {
+      background: #f0e6ed;
+      border: 1px solid #dcc5d5;
+      color: #79667e;
+      padding: 12px 26px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.2s;
+    }
+    .btn-age-no:hover {
+      background: #e4d7e1;
+      color: #3b2840;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* メッセージウィンドウ風ヘッダー */
+    header {
+      padding: 70px 0 50px;
+    }
+    .header-window {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 44px 38px;
+      box-shadow: var(--window-shadow);
+      backdrop-filter: blur(14px);
+      position: relative;
+    }
+    .header-window::before {
+      content: "STATUS : ACTIVE";
+      position: absolute;
+      top: 18px;
+      right: 28px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--accent-sub);
+      font-weight: 700;
+      opacity: 0.7;
+    }
+    .status-badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #ff3377;
+      background: rgba(255, 51, 119, 0.08);
+      border: 1px solid rgba(255, 51, 119, 0.28);
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+    }
+    .author-title {
+      font-size: 0.88rem;
+      color: var(--accent-sub);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    h1 {
+      font-size: 2.7rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+      color: #3d2345;
+      text-shadow: 0 2px 10px rgba(255, 120, 170, 0.15);
+    }
+    .lead {
+      color: var(--text-sub);
+      font-size: 1.02rem;
+      max-width: 760px;
+      margin-bottom: 28px;
+      line-height: 1.9;
+    }
+    .lead strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .header-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 26px;
+      border-radius: 99px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.22s;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(255, 101, 156, 0.35);
+    }
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(255, 101, 156, 0.5);
+    }
+    .btn-secondary {
+      border: 1px solid var(--border-color);
+      color: #55445e;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(120, 90, 130, 0.08);
+    }
+    .btn-secondary:hover {
+      background: #faf4f8;
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    section {
+      padding: 60px 0;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 26px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .section-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .section-sub {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+    h2 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #3b2844;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .count-badge {
+      color: var(--text-sub);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* 見出し横のトグルボタン */
+    .btn-works-toggle {
+      padding: 8px 18px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: 99px;
+      border: 1.5px solid var(--accent);
+      background: #ffffff;
+      color: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(255, 101, 156, 0.18);
+      transition: all 0.2s;
+    }
+    .btn-works-toggle:hover {
+      background: var(--accent);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(255, 101, 156, 0.3);
+    }
+
+    /* ゲームパラメータ風 Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 10px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: var(--window-shadow);
+      backdrop-filter: blur(10px);
+    }
+    .stat-num {
+      font-size: 2.3rem;
+      font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    /* 選択肢・システムウィンドウ風特徴カード */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 22px;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: var(--window-shadow);
+      backdrop-filter: blur(12px);
+      transition: all 0.25s;
+    }
+    .feature-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    .feature-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 12px;
+      color: #492b52;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .feature-card p {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+
+    /* タグ */
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .genre-tag {
+      background: #ffffff;
+      border: 1px solid rgba(255, 120, 170, 0.35);
+      color: #55395a;
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(255, 150, 190, 0.12);
+    }
+
+    /* その他実績 */
+    .other-works-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .other-work-item {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(180, 150, 170, 0.08);
+    }
+    .other-work-item h4 {
+      font-size: 0.98rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .other-work-item ul {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.86rem;
+      color: var(--text-sub);
+    }
+    .other-work-item li {
+      margin-bottom: 4px;
+    }
+    .other-work-item li::before {
+      content: "♡ ";
+      color: var(--accent);
+      font-size: 0.75rem;
+    }
+
+    /* 作品ギャラリー */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .work-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--window-shadow);
+      transition: all 0.25s ease;
+    }
+    .work-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(230, 130, 170, 0.22);
+    }
+    .work-card.is-hidden {
+      display: none;
+    }
+    .thumb-wrapper {
+      width: 100%;
+      height: 200px;
+      background: #f8eff4;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #f2e2eb;
+    }
+    .thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .work-card:hover .thumb-img {
+      transform: scale(1.06);
+    }
+    .card-body {
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .work-title {
+      font-size: 0.98rem;
+      line-height: 1.55;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #3b2844;
+      transition: color 0.2s;
+    }
+    .work-card:hover .work-title {
+      color: var(--accent);
+    }
+    .work-info {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #f2e4ec;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .link-hint {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* お問い合わせウィンドウ */
+    .contact-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 55px 28px;
+      text-align: center;
+      max-width: 660px;
+      margin: 0 auto;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--window-shadow);
+    }
+    .contact-box p {
+      color: var(--text-sub);
+      margin: 16px 0 30px;
+      font-size: 0.96rem;
+    }
+
+    /* フッターリンク */
+    .bottom-links-section {
+      text-align: center;
+      margin: 50px auto 90px;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    .bottom-link-block p {
+      color: var(--text-sub);
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    /* 右下固定：TOPへ戻るボタン */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 6px 20px rgba(255, 101, 156, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+    .scroll-to-top:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(255, 101, 156, 0.6);
+    }
+    .scroll-to-top svg {
+      width: 18px;
+      height: 18px;
+      margin-bottom: -2px;
+    }
+    .scroll-to-top span {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body id="top">
+
+  <!-- 年齢確認ポップアップ（18禁ADV風） -->
+  <div id="age-gate" class="age-gate-overlay">
+    <div class="age-gate-box">
+      <span class="age-gate-badge">AGE VERIFICATION / R18</span>
+      <h2 class="age-gate-title">年齢確認</h2>
+      <p class="age-gate-text">
+        当サイトは、18歳未満の方には不適切な表現・成人向け作品の情報（パッケージ画像等）を含んでいます。<br><br>
+        <strong>あなたは18歳以上ですか？</strong>
+      </p>
+      <div class="age-gate-buttons">
+        <button class="btn-age-yes" onclick="confirmAge(true)">はい（入場する）</button>
+        <a href="https://www.google.co.jp" class="btn-age-no">いいえ（退出）</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 常時右下に表示されるTOPへ戻るボタン -->
+  <a href="#top" class="scroll-to-top" aria-label="ページ最上部へ戻る">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+    <span>TOP</span>
+  </a>
+
+  <div class="container">
+    <header>
+      <div class="header-window">
+        <span class="status-badge">ご依頼受付中</span>
+        <div class="author-title">Scenario Writer / シナリオライター</div>
+        <h1>真白よぞら</h1>
+        <p class="lead">
+          音声作品・ASMR・各種メディア向けのシナリオを執筆しています。<br><br>
+          同人サークルでの音声作品ディレクション・運営経験を活かし、<br>
+          全体の制作フローを見据えた進行・台本設計が可能です。<br><br>
+          キャラクターの感情とフェチへの解像度を追求し、<br>
+          <strong>「声優様が最も演じやすく、リスナーが深く没入できるシナリオ」</strong><br>
+          をお届けします。
+        </p>
+        <div class="header-links">
+          <a href="https://forms.gle/JpDuzSGKTtjgE37G9" target="_blank" rel="noopener" class="btn btn-primary">お仕事のご相談フォームを開く ↗</a>
+          <a href="#about" class="btn btn-secondary">執筆の特徴・業務範囲</a>
+          <button id="header-view-btn" class="btn btn-secondary" onclick="toggleWorks(true)">実績一覧を見る (52件)</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 実績数字ハイライト -->
+    <section style="padding: 20px 0 30px;">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">DLsite音声作品 執筆実績</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">Direction</div>
+          <div class="stat-label">サークル運営・音声制作ディレクション経験</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">Full</div>
+          <div class="stat-label">企画・プロットから校正まで一貫対応</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 執筆のこだわり ＆ 得意ジャンル -->
+    <section id="about">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-sub">System / Policy</span>
+          <h2>執筆のこだわり</h2>
+        </div>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>🎙️ 声優様が演じやすいト書き・演技指示</h3>
+          <p>
+            演じやすさを意識し、距離感や息遣い、立ち位置やシチュエーションまで具体的かつ分かりやすく記載することを意識。<br>
+            演者様の魅力をお借りし、作品全体の圧倒的没入感をお届けします。
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>💖 フェチ・性癖への高い解像度</h3>
+          <p>
+            「どこで最も興奮するか」「どう崩れ落ちていくか」など、リスナーの心理に寄り添った繊細な心理描写とシチュエーション構築を徹底。性癖のツボを外さないシナリオを追求します。
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>🤝 音声制作の流れを理解した柔軟な対応</h3>
+          <p>
+            サークル運営・ディレクション経験があるため、イラスト発注や音声編集、トラック分けなどの制作工程を考慮した台本作りと、スムーズなコミュニケーションが可能です。
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 40px;">
+        <h3 style="font-size: 1.15rem; color: #492b52; margin-bottom: 8px; font-weight: 700;">得意なジャンル・シチュエーション</h3>
+        <p style="color: var(--text-sub); font-size: 0.9rem;">
+          幅広いシチュエーションに対応可能です。特に以下の属性・展開で多くのご支持をいただいています。
+        </p>
+        <div class="tag-cloud">
+          <span class="genre-tag">純愛・甘々イチャラブ</span>
+          <span class="genre-tag">オホ声・メス堕ち</span>
+          <span class="genre-tag">包容力のあるお姉さん</span>
+          <span class="genre-tag">至近距離の囁き・ASMR特化</span>
+          <span class="genre-tag">テンポの良いコメディ展開</span>
+          <span class="genre-tag">理解らせ・背徳感</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 対応業務範囲 -->
+    <section id="services">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-sub">Service Menu</span>
+          <h2>対応業務範囲</h2>
+        </div>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>💡 企画立案・プロット作成</h3>
+          <p>
+            「こういうフェチの作品を作りたい」「キャスト様の声質に合わせた企画にしたい」など、大まかなアイデアからの企画構成・プロット作成をお引き受けします。
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>✍️ シナリオ本文執筆</h3>
+          <p>
+            音声作品（ASMR・バイノーラル）、ゲーム、同人漫画などの本稿執筆。長編からショートコンテンツまで尺や文字数に合わせて対応可能です。
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>🔍 校正・ディレクション協力</h3>
+          <p>
+            既存シナリオの推敲・ト書き修正はもちろん、制作全体の尺配分や音声化を見据えた仕様相談など、ディレクション目線でのサポートも承ります。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 制作実績一覧（52件）※先に配置 -->
+    <section id="works">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-sub">Works Gallery</span>
+          <h2>制作実績 (Works)</h2>
+        </div>
+        <div class="section-header-right">
+          <span class="count-badge" id="works-count-label">最新3件を表示中</span>
+          <button id="toggle-more-btn" class="btn-works-toggle" onclick="toggleWorks()">すべての実績を見る (全52件) ▼</button>
+        </div>
+      </div>
+
+      <div class="works-grid" id="works-grid">
+
+        <!-- 1 -->
+        <a class="work-card" href="https://www.dlsite.com/maniax/announce/=/product_id/RJ01747356.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/ana/doujin/RJ01748000/RJ01747356_ana_img_main_240x240.webp" alt="高潔なる爆乳猫王子様は淫らなメスへと発情する" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">高潔なる爆乳猫王子様は淫らなメスへと発情する</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 2 -->
+        <a class="work-card" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01724941.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01725000/RJ01724941_img_main_240x240.webp" alt="甘々躾えっち" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">甘々躾えっち。~私が君の全部貰うね♡よわよわマゾオスな君を調教ストーリー♡~</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 3 -->
+        <a class="work-card" href="https://www.dlsite.com/maniax/announce/=/product_id/RJ01747807.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/ana/doujin/RJ01748000/RJ01747807_ana_img_main_240x240.webp" alt="癒し系女神のあまあま授乳レッスン" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">癒し系女神のあまあま授乳レッスン～母乳が出る体になるまでたっぷり濃厚子作りセックス～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 4 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01708435.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01709000/RJ01708435_img_main_240x240.webp" alt="おほ堕ち女神、神格剥奪強○発情催○" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">おほ堕ち女神、神格剥奪強○発情催○ ～あなたは選ばれた勇者なのです…ぁんっ！?おまんこから卑しい音出ちゃうぅ～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 5 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01709254.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01710000/RJ01709254_img_main_240x240.webp" alt="怪盗パコリーヌの七変化ックス" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">怪盗パコリーヌの七変化ックス〜稀代の怪盗♀が主婦に化けて、聞き込み中の探偵をちん媚び甘々セックスで翻弄する〜</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 6 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01704991.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01705000/RJ01704991_img_main_240x240.webp" alt="絶対陥落♡いじわるメンズエステ我慢我慢フルコース" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【特典漫画付♡】絶対陥落♡いじわるメンズエステ我慢我慢フルコース♡</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 7 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01674174.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01675000/RJ01674174_img_main_240x240.webp" alt="敗戦の戦乙女、屈辱のおま〇こ調教私は快楽おほ堕ちしない" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【敗北無様堕ち】敗戦の戦乙女、屈辱のおま〇こ調教私は快楽おほ堕ちしない</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 8 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01690831.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01691000/RJ01690831_img_main_240x240.webp" alt="ダウナー系不思議の国のメイドさん" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">ダウナー系不思議の国のメイドさんwithご主人様 feat.ドキドキハメハメ強引ドスケベ密着プレイ日記</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 9 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/home/work/=/product_id/RJ01715412.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01716000/RJ01715412_img_main_240x240.webp" alt="ネモフィラの祝福をあなたに贈ろう 体験版" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">ネモフィラの祝福をあなたに贈ろう 体験版</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 10 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01647223.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01648000/RJ01647223_img_main_240x240.webp" alt="氷のムチムチ姫騎士の雑魚おま〇こ種付け孕ませ契約2" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">氷のムチムチ姫騎士の雑魚おま〇こ種付け孕ませ契約2 ～あんなゴミクズのちんぽ、私が切り落として……お゛っ！?おほぉおッ♡～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 11 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01664740.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01665000/RJ01664740_img_main_240x240.webp" alt="弥里万亭れでぃお" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">ちょっとエッチな落語が聴ける弥里万亭れでぃお～今宵は時ヌキ～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 12 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01599480.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01600000/RJ01599480_img_main_240x240.webp" alt="大妖狐の傲慢な雑魚おま〇こ搾精交尾" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">大妖狐の傲慢な雑魚おま〇こ搾精交尾〜妾の生贄となるがよいのじゃ！ひぃっ！? な、なんじゃ、奥、そこ……っ！～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 13 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01543025.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01544000/RJ01543025_img_main_240x240.webp" alt="壁穴風俗" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【壁穴風俗】顔の見えないギャル風俗嬢にド下品フェラで搾られる ～変態お兄さん専用じゅぼじゅぼサービス～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 14 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01612159.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01613000/RJ01612159_img_main_240x240.webp" alt="清楚系元カノJKは拗らせおま〇こ堕ち" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">清楚系元カノJKは拗らせおま〇こ堕ち～キミ専用チン媚びおま〇こでまたラブラブしようね♡～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 15 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01600529.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01601000/RJ01600529_img_main_240x240.webp" alt="浮気ごっこ♡～地元の幼馴染ギャル〜" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">浮気ごっこ♡～地元の幼馴染ギャル〜「彼女さんとの不満、全部あたしにぶつけて?」</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 16 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01604082.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01605000/RJ01604082_img_main_240x240.webp" alt="あーしはキミ専用全肯定女神様" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【ぐちゅぐぽ耳舐め&囁き多め】あーしはキミ専用全肯定女神様♡</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 17 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01593431.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01594000/RJ01593431_img_main_240x240.webp" alt="童貞の僕にセックスを教えてくれた従姉と久しぶりに絡み合った夜" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">童貞の僕にセックスを教えてくれた従姉と久しぶりに絡み合った夜</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 18 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01579210.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01580000/RJ01579210_img_main_240x240.webp" alt="ムチムチ上位貴族吸血姫さまの強○寵愛性活" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">ムチムチ上位貴族吸血姫さまの強○寵愛性活～おまえはわらわのものなのじゃ～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 19 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01574462.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01575000/RJ01574462_img_main_240x240.webp" alt="ねむあま発情ダウナー巨乳妹" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">ねむあま発情ダウナー巨乳妹～大好きな兄に射精されないと布団から出ないようです～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 20 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01566324.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01567000/RJ01566324_img_main_240x240.webp" alt="彼女持ちの先輩とどうしてもエッチしたい後輩OL" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">彼女持ちの先輩とどうしてもエッチしたい後輩OL</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 21 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01556775.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01557000/RJ01556775_img_main_240x240.webp" alt="メイド怪盗、推参す！" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">メイド怪盗、推参す！～アナタの童貞♂いただきマス♀～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 22 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01535761.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01536000/RJ01535761_img_main_240x240.webp" alt="低音爆乳サキュバス王子様はおほ声ドスケベなメスになりたい" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">低音爆乳サキュバス王子様はおほ声ドスケベなメスになりたい</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 23 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01551565.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01552000/RJ01551565_img_main_240x240.webp" alt="高潔ムチムチ姫騎士様の雑魚おま〇こ種付け孕ませ契約" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">高潔ムチムチ姫騎士様の雑魚おま〇こ種付け孕ませ契約~お゛っ、僕は絶対にお前のちんぽには屈しないぃい~</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 24 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01529381.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01530000/RJ01529381_img_main_240x240.webp" alt="やさしい女狐先生の童貞ふでおろし" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">やさしい女狐先生の童貞ふでおろし</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 25 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01502352.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01503000/RJ01502352_img_main_240x240.webp" alt="博多弁ギャル先輩とばりすごか冤罪エッチ" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">博多弁ギャル先輩とばりすごか冤罪エッチ♡</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 26 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01478671.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01479000/RJ01478671_img_main_240x240.webp" alt="メリー寝取りスマス" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【背徳感たっぷり逆NTR】メリー寝取りスマス〜悪友のコンカフェ嬢に、ねっとり堕とされる聖夜〜</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 27 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01492685.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01493000/RJ01492685_img_main_240x240.webp" alt="寝取られカノジョの強がりセックス" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">寝取られカノジョの強がりセックス～パパちんぽに快楽堕ちしたギャルの裏の顔～</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 28 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01482728.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01483000/RJ01482728_img_main_240x240.webp" alt="初心者サウナーお嬢様のあちあち理解らせエッチ" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【バイノーラル】初心者サウナーお嬢様のあちあち理解らせエッチ</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 29 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01465522.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01466000/RJ01465522_img_main_240x240.webp" alt="爆乳金髪娘とハワイでラブあまアバンチュール" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">爆乳金髪娘とハワイでラブあまアバンチュール〜傷心旅行中の男と家出娘の燃え上がる恋〜</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 30 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01458485.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01459000/RJ01458485_img_main_240x240.webp" alt="低音ダウナー爆乳王子様JK" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">低音ダウナー爆乳王子様JKは自分がオホ声響かせるドスケベな雌だってまだ知らない</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 31 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01457707.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01458000/RJ01457707_img_main_240x240.webp" alt="アングラ彫り師の溺愛セックス" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">「中出しくらいで怒らねぇよ。養ってやるから、横にいろ」〜アングラ彫り師の溺愛セックス〜</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 32 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01453564.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01454000/RJ01453564_img_main_240x240.webp" alt="くの一見習い、お世話させていただきますっ" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【バイノーラル】くの一見習い、お世話させていただきますっ！</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 33 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01446881.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01447000/RJ01446881_img_main_240x240.webp" alt="ヤンデレストーカー女に愛されて一滴残らず搾られる" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">ヤンデレストーカー女に愛されて一滴残らず搾られる</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 34 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01439394.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01440000/RJ01439394_img_main_240x240.webp" alt="幼馴染の少女は、だ~いすきな勇者の帰りを待って妄想プレイ" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【CV.月見れもん様x1人2役x妄想プレイx処女喪失】幼馴染の少女は、だ~いすきな勇者の帰りを待って妄想プレイ</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 35 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01440175.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01441000/RJ01440175_img_main_240x240.webp" alt="ダークエルフは人間との交尾で闇の魔法を使ってもOKです" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【CV.夏目ミカコ様xバイノーラル】ダークエルフは人間との交尾で闇の魔法を使ってもOKです！?</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 36 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01441815.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01442000/RJ01441815_img_main_240x240.webp" alt="悪役レスラーの優雅でエッチな休日プロレス" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">悪役レスラーの優雅でエッチな休日プロレス</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 37 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01434117.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01435000/RJ01434117_img_main_240x240.webp" alt="軟体インストラクターのやわあまイチャラブえっち" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">軟体インストラクターのやわあまイチャラブえっち</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 38 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01424756.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01425000/RJ01424756_img_main_240x240.webp" alt="控えめ自動車整備士お姉さんと大胆イチャラブカーセックス" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">控えめ自動車整備士お姉さんと大胆イチャラブカーセックス</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 39 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01407335.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01408000/RJ01407335_img_main_240x240.webp" alt="ギャル姫様の年に1度のダーリンしゅきしゅきエッチ" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">ギャル姫様の年に1度のダーリンしゅきしゅきエッチ</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 40 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01420491.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01421000/RJ01420491_img_main_240x240.webp" alt="メ○ガキいじめっ子はご主人様の孕み袋" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">メ○ガキいじめっ子はご主人様の孕み袋</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 41 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01408326.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01409000/RJ01408326_img_main_240x240.webp" alt="依存気質なダウナー地雷系女子 舞ちゃん" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【メンヘラ少女×純愛】依存気質なダウナー地雷系女子 舞ちゃんと純愛イチャラブSEX【バイノーラル】</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 42 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01419496.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01420000/RJ01419496_img_main_240x240.webp" alt="堅物OLお姉さんとの居酒屋泥酔インモラルえっち" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">堅物OLお姉さんとの居酒屋泥酔インモラルえっち</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 43 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01416790.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01417000/RJ01416790_img_main_240x240.webp" alt="現場の押しに弱いお姉さんが可愛くてしょうがない" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">現場の押しに弱いお姉さんが可愛くてしょうがない</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 44 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01412908.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01413000/RJ01412908_img_main_240x240.webp" alt="なにわのたこ焼きお姉さんとめっちゃええことする話" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">なにわのたこ焼きお姉さんとめっちゃええことする話</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 45 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01408469.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01409000/RJ01408469_img_main_240x240.webp" alt="鬼つよゴブリンクイーンが冒険者と愛を育む" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">【バイノーラル/耳舐め/高画質イラスト同梱】一目ぼれエッチ!! 鬼つよゴブリンクイーンが冒険者と愛を育む♡</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 46 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01406195.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01407000/RJ01406195_img_main_240x240.webp" alt="プロゲーマーによる外出イヤイヤえっち" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">プロゲーマーによる外出イヤイヤえっち♡</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 47 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01396952.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01397000/RJ01396952_img_main_240x240.webp" alt="デカパイバックパッカーお姉さん、海の向こうから襲来！" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">デカパイバックパッカーお姉さん、海の向こうから襲来！</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 48 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01398622.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01399000/RJ01398622_img_main_240x240.webp" alt="黒鐘探偵事務所XXXX録" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">黒鐘探偵事務所XXXX録【関西弁/おねショタ】</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 49 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01392524.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01393000/RJ01392524_img_main_240x240.webp" alt="俺にだけ甘いメス声を聞かせてくれるダウナー同級生" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">俺にだけ甘いメス声を聞かせてくれるダウナー同級生</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 50 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01381307.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01382000/RJ01381307_img_main_240x240.webp" alt="引っ越し先のどちゃシコベビーシッターとの夜な夜な甘々エッチ時間" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">引っ越し先のどちゃシコベビーシッターとの夜な夜な甘々エッチ時間</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 51 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01384465.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01385000/RJ01384465_img_main_240x240.webp" alt="博多弁の先輩OLに甘やかしてもらう全肯定いちゃあまデート" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">博多弁の先輩OLに甘やかしてもらう全肯定いちゃあまデート「キミのこと...ばり好いとーよ♡」【バイノーラル/癒し/1時間】</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 52 -->
+        <a class="work-card is-hidden" href="https://www.dlsite.com/maniax/work/=/product_id/RJ01383063.html" target="_blank" rel="noopener">
+          <div class="thumb-wrapper">
+            <img class="thumb-img" src="https://img.dlsite.jp/resize/images2/work/doujin/RJ01384000/RJ01383063_img_main_240x240.webp" alt="幼馴染は受験で不安なあなたに”最高の息抜き”をしてあげたい！" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="work-title">幼馴染は受験で不安なあなたに”最高の息抜き”をしてあげたい！～おほぉ！大好きなキミのおちんちんでイクぅ♡～【KU100収録】</h3>
+            <div class="work-info">
+              <span class="link-hint">詳細を見る ↗</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- 音声作品以外の執筆実績（非公開案件等）※制作実績の後に配置 -->
+    <section id="other-works">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-sub">Archive</span>
+          <h2>その他の執筆実績</h2>
+        </div>
+        <span class="count-badge">非公開案件・別メディア等</span>
+      </div>
+      <div class="other-works-list">
+        <div class="other-work-item">
+          <h4>YouTube シナリオ</h4>
+          <ul>
+            <li>事件解説動画シナリオ</li>
+            <li>日本称賛系ショート動画</li>
+            <li>スカッと系ショート動画</li>
+            <li>恋愛・ラブコメ動画</li>
+          </ul>
+        </div>
+        <div class="other-work-item">
+          <h4>成人向け漫画シナリオ</h4>
+          <ul>
+            <li>同人オリジナル漫画</li>
+            <li>有名作品の二次創作シナリオ各種</li>
+            <li>プロット・ネーム構成協力</li>
+          </ul>
+        </div>
+        <div class="other-work-item">
+          <h4>ラジオCM・WEBライティング</h4>
+          <ul>
+            <li>ラジオ40秒CM シナリオ作成</li>
+            <li>学習系WEBサイト SEO記事執筆</li>
+            <li>構成案作成・リライト</li>
+          </ul>
+        </div>
+        <div class="other-work-item">
+          <h4>作詞（リリック）</h4>
+          <ul>
+            <li>音楽グループ オリジナルソング</li>
+            <li>VTuber様 オリジナル楽曲作詞</li>
+            <li>世界観に合わせた詞の書き下ろし</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- お問い合わせセクション -->
+    <section id="contact">
+      <div class="contact-box">
+        <div class="section-title-wrap" style="align-items: center; margin-bottom: 12px;">
+          <span class="section-sub">Contact / Order</span>
+          <h2>お仕事のご依頼・ご相談</h2>
+        </div>
+        <p>
+          企画概要、希望文字数、ご予算感、納期など、下記専用フォームよりお気軽にご連絡ください。<br>
+          「まだ企画が固まっていない」「プロット段階から相談したい」という場合も歓迎しております。
+        </p>
+        <a href="https://forms.gle/JpDuzSGKTtjgE37G9" target="_blank" rel="noopener" class="btn btn-primary">お仕事のご相談フォームを開く ↗</a>
+      </div>
+    </section>
+
+    <!-- 下部リンクエリア（X & 運営サークル） -->
+    <div class="bottom-links-section">
+      <!-- Xリンク -->
+      <div class="bottom-link-block">
+        <p>作品の販売状況や受注スケジュールはX（旧Twitter）にて随時発信しています</p>
+        <a href="https://x.com/yozora_40" target="_blank" rel="noopener" class="btn btn-secondary" style="gap: 8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          真白よぞら（@yozora_40）をチェック ↗
+        </a>
+      </div>
+
+      <!-- 運営サークル（DLsite）リンク -->
+      <div class="bottom-link-block">
+        <p>真白よぞらが企画・運営を行う音声サークルの作品一覧はこちらからご覧いただけます</p>
+        <a href="https://www.dlsite.com/maniax/circle/profile/=/maker_id/RG01045888.html" target="_blank" rel="noopener" class="btn btn-secondary" style="gap: 8px;">
+          <span>🎧</span> 運営サークル「宵之世舎」DLsiteページ ↗
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 年齢確認の判定（セッション保持）
+    window.addEventListener('DOMContentLoaded', () => {
+      const isPassed = sessionStorage.getItem('age_verified');
+      if (isPassed === 'true') {
+        const ageGate = document.getElementById('age-gate');
+        if (ageGate) ageGate.classList.add('is-passed');
+      }
+    });
+
+    function confirmAge(allowed) {
+      if (allowed) {
+        sessionStorage.setItem('age_verified', 'true');
+        const ageGate = document.getElementById('age-gate');
+        if (ageGate) {
+          ageGate.style.opacity = '0';
+          ageGate.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            ageGate.classList.add('is-passed');
+          }, 300);
+        }
+      }
+    }
+
+    let isExpanded = false;
+
+    function toggleWorks(forceOpen = false) {
+      const hiddenCards = document.querySelectorAll('.work-card:nth-child(n+4)');
+      const toggleBtn = document.getElementById('toggle-more-btn');
+      const countLabel = document.getElementById('works-count-label');
+      const worksSection = document.getElementById('works');
+
+      if (forceOpen) {
+        isExpanded = true;
+      } else {
+        isExpanded = !isExpanded;
+      }
+
+      hiddenCards.forEach(card => {
+        if (isExpanded) {
+          card.classList.remove('is-hidden');
+        } else {
+          card.classList.add('is-hidden');
+        }
+      });
+
+      if (isExpanded) {
+        toggleBtn.textContent = '実績を閉じる (3件表示に戻す) ▲';
+        countLabel.textContent = '全 52 作品を表示中';
+        if (forceOpen) {
+          worksSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        toggleBtn.textContent = 'すべての実績を見る (全52件) ▼';
+        countLabel.textContent = '最新3件を表示中';
+        worksSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
+
+</body>
+</html>
